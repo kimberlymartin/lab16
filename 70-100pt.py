@@ -61,18 +61,23 @@ class myApp(object):
     def key(self,event):
         global player
         global rocket1Fired
+        x1,y1,x2,y2 = drawpad.coords(player)
         if event.char == "w":
-            drawpad.move(player,0,-4)
-            drawpad.move(rocket1,0,-4)
+            if y1 > 3:
+                drawpad.move(player,0,-4)
+                drawpad.move(rocket1,0,-4)
         if event.char == "a":
-            drawpad.move(player,-4,0)
-            drawpad.move(rocket1,-4,0)
+            if x1 > 3:
+                drawpad.move(player,-4,0)
+                drawpad.move(rocket1,-4,0)
         if event.char == "s":
-            drawpad.move(player,0,4)
-            drawpad.move(rocket1,0,4)
+            if y2 < 600:
+                drawpad.move(player,0,4)
+                drawpad.move(rocket1,0,4)
         if event.char == "d":
-            drawpad.move(player,4,0)
-            drawpad.move(rocket1,4,0)
+            if x2 < 800:
+                drawpad.move(player,4,0)
+                drawpad.move(rocket1,4,0)
             
             
     
