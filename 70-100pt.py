@@ -9,11 +9,10 @@
 from Tkinter import *
 root = Tk()
 drawpad = Canvas(root, width=800,height=600, background='white')
-rocket1 = drawpad.create_rectangle(400,585,405,590)
-player = drawpad.create_oval(390,580,410,600, fill="blue")
+rocket1 = drawpad.create_rectangle(400,585,405,590, fill = "black")
+player = drawpad.create_oval(390,580,410,600, fill='blue')
 enemy = drawpad.create_rectangle(50,50,100,60, fill="red")
 rocket1Fired = False
-
 direction = 5
 
 
@@ -21,6 +20,8 @@ class myApp(object):
     def __init__(self, parent):
         
         global drawpad
+        global rocket1Fired
+        global rockets
         self.myParent = parent  
         self.myContainer1 = Frame(parent)
         self.myContainer1.pack()
@@ -35,8 +36,8 @@ class myApp(object):
         
         self.rocketsTxt = Label(root, text=str(self.rockets), width=len(str(self.rockets)), bg='green')
         self.rocketsTxt.pack()
-        
-        self.rocketFired = False
+                
+        self.rocket1Fired = False
         # Adding the drawpad, adding the key listener, starting animation
         drawpad.pack()
         root.bind_all('<Key>', self.key)
@@ -46,11 +47,17 @@ class myApp(object):
         global drawpad
         global enemy
         global direction
-        global rocket
+        global rocket1
         global rocket1Fired
+        global rockets
         x1,y1,x2,y2 = drawpad.coords(enemy)
         px1,py1,px2,py2 = drawpad.coords(player)
-
+        rx1,ry1,rx2,ry2 = drawpad.coords(rocket1)
+        if rocket1Fired == True:
+            drawpad.move(rocket1,0,-20)
+            if ry1 < 0:
+                drawpad.move(rocket1,(px1-(rx1-10)),(py1-(ry1-25)))
+                rocket1Fired = False
         if x2 > 800:
             direction = - 5
         elif x1 < 0:
@@ -63,9 +70,8 @@ class myApp(object):
         global rocket1Fired
         x1,y1,x2,y2 = drawpad.coords(player)
         if event.char == "w":
-            if y1 > 3:
-                drawpad.move(player,0,-4)
-                drawpad.move(rocket1,0,-4)
+            drawpad.move(player,0,-4)
+            drawpad.move(rocket1,0,-4)
         if event.char == "a":
             if x1 > 3:
                 drawpad.move(player,-4,0)
@@ -78,9 +84,12 @@ class myApp(object):
             if x2 < 800:
                 drawpad.move(player,4,0)
                 drawpad.move(rocket1,4,0)
-            
-            
-    
+        if self.rockets > 0:
+            if event.char == " ":
+                rocket1Fired = True
+                self.rockets = self.rockets -1
+                self.rocketsTxt.config(text=str(self.rockets))
+                
     def collisionDetect(self, rocket):
         rx1,ry1,rx2,ry2 = drawpad.coords(rocket)
 app = myApp(root)
