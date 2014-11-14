@@ -92,5 +92,10 @@ class myApp(object):
                 
     def collisionDetect(self, rocket):
         rx1,ry1,rx2,ry2 = drawpad.coords(rocket)
+        x1,y1,x2,y1 = drawpad.coords(enemy)
+        if (rx1 > x1 and rx2 < x2) and (ry1 > y1 and ry1 < y2):
+            drawpad.delete(enemy)
+            drawpad.delete(missile)
+            
 app = myApp(root)
 root.mainloop()
